@@ -1,9 +1,10 @@
 {
-    "name": "Page Redder",
-    "description": "Make the current page red",
+    "name": "Livereload",
+    "description": "Injects livereload.js into the current page.",
     "version": "2.0",
     "permissions": [
-        "activeTab"
+        "tabs",
+        "http://*/*"
     ],
     "background": {
         "scripts": [
@@ -12,7 +13,7 @@
         "persistent": false
     },
     "browser_action": {
-        "default_title": "Make this page red"
+        "default_title": "Inject livereload.js"
     },
     "manifest_version": 2
 }

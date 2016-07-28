@@ -7,6 +7,6 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
 function injectLivereload() {
     var script = document.createElement("script");
     script.setAttribute("src",
-        "https://raw.githubusercontent.com/livereload/livereload-js/master/dist/livereload.js");
+        "http://localhost:35729/livereload.js");
     document.head.appendChild(script);
 }
