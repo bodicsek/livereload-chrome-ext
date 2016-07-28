@@ -2,7 +2,15 @@
 
 var tabIds = [];
 
-chrome.browserAction.onClicked.addListener(function (tab) {
+chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+  chrome.pageAction.show(tabs[0].id);
+});
+
+chrome.tabs.onSelectionChanged.addListener(function (tabId) {
+  chrome.pageAction.show(tabId);
+});
+
+chrome.pageAction.onClicked.addListener(function (tab) {
   injectLivereloadScript(tab.id);
 });
 
