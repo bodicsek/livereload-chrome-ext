@@ -1,7 +1,5 @@
 'use strict';
 
-document.body.style.backgroundColor = "red";
-
 chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
     injectLivereload();
 });
