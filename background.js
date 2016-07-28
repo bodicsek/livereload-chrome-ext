@@ -1,15 +1,15 @@
-// Copyright (c) 2011 The Chromium Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
+'use strict';
 
-// Called when the user clicks on the browser action.
+var tabIds = [];
+
 chrome.browserAction.onClicked.addListener(function (tab) {
-    // No tabs or host permissions needed!
-    console.log('Turning ' + tab.url + ' red!');
     chrome.tabs.executeScript({
         file: 'content_script.js'
     }, function () {
-        console.log("Sending message to tab '" + tab.id + "' to inject.")
-        chrome.tabs.sendMessage(tab.id, {}, function (response) { });
+        chrome.tabs.sendMessage(tab.id, {}, function (response) {
+            if (tabIds.some(function (id) { id == tab.id })) {
+                tabIds.push(tab.id);
+            }
+        });
     });
 });
