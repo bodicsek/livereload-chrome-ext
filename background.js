@@ -19,8 +19,8 @@ chrome.pageAction.onClicked.addListener(function (tab) {
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
   if (changeInfo.status == "complete") {
     chrome.pageAction.show(tabId);
-    tabIds.filter(function (id) { id === tabId })
-      .forEach(function (id) { setUpTab(id) });
+    tabIds.filter(function (id) { return id === tabId; })
+      .forEach(function (id) { setUpTab(id); });
   }
 });
 
@@ -36,15 +36,15 @@ function setUpTab(tabId) {
   injectContentScript(tabId, function () {
     injectLivereloadScript(tabId, function () {
       tabIds = tabIds.concat([tabId]);
-      chrome.pageAction.setIcon(tabId, "images/active.png");
+      chrome.pageAction.setIcon({ tabId: tabId, path: "images/active.png" });
     });
   });
 }
 
 function tearDownTab(tabId) {
   extractLivereloadScript(tabId, function () {
-    tabIds = tabIds.filter(function (id) { id !== tabId });
-    chrome.pageAction.setIcon(tabId, "images/inactive.png");
+    tabIds = tabIds.filter(function (id) { return id !== tabId; });
+    chrome.pageAction.setIcon({ tabId: tabId, path: "images/inactive.png" });
   });
 }
 
