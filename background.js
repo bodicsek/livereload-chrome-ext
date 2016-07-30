@@ -1,4 +1,5 @@
 'use strict';
+var chrome;
 
 var tabIds = [];
 
@@ -14,7 +15,7 @@ chrome.pageAction.onClicked.addListener(function (tab) {
   toggleLivereloadScript(tab.id);
 });
 
-chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
   if (changeInfo.status == "complete") {
     chrome.pageAction.show(tabId);
     tabIds.filter(function (id) { return id === tabId; })

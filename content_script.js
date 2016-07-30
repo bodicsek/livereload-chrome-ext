@@ -1,8 +1,9 @@
 'use strict';
+var chrome;
 
 var script;
 
-chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
+chrome.runtime.onMessage.addListener(function (msg) {
   switch (msg.msg) {
     case "inject":
       console.log("[LIVERELOAD CONTENT] inject");
@@ -11,6 +12,7 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
     case "extract":
       console.log("[LIVERELOAD CONTENT] extract");
       extractLivereload();
+      break;
     default:
       break;
   }
