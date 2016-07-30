@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 var chrome;
 
 var tabIds = [];
@@ -48,7 +48,7 @@ function tearDownTab(tabId) {
 }
 
 function injectContentScript(tabId, callback) {
-  chrome.tabs.executeScript(tabId, { file: 'content_script.js' }, callback);
+  chrome.tabs.executeScript(tabId, { file: "content_script.js" }, callback);
 }
 
 function injectLivereloadScript(tabId, callback) {
