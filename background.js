@@ -3,12 +3,10 @@
 var tabIds = [];
 
 chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-  //TODO: check if the current page has livereload.js already inserted
   chrome.pageAction.show(tabs[0].id);
 });
 
 chrome.tabs.onSelectionChanged.addListener(function (tabId) {
-  //TODO: check if the current page has livereload.js already inserted
   chrome.pageAction.show(tabId);
 });
 
