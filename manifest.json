@@ -1,19 +1,20 @@
 {
-    "name": "Livereload",
-    "description": "Injects livereload.js into the current page.",
-    "version": "2.0",
-    "permissions": [
-        "tabs",
-        "http://*/*"
+  "name": "Livereload",
+  "description": "Injects livereload.js into the current page.",
+  "version": "2.0",
+  "permissions": [
+    "tabs",
+    "http://*/*"
+  ],
+  "background": {
+    "scripts": [
+      "background.js"
     ],
-    "background": {
-        "scripts": [
-            "background.js"
-        ],
-        "persistent": false
-    },
-    "page_action": {
-        "default_title": "Inject livereload.js",
-    },
-    "manifest_version": 2
+    "persistent": false
+  },
+  "page_action": {
+    "default_title": "Inject livereload.js",
+    "default_icon": "images/inactive.png"
+  },
+  "manifest_version": 2
 }

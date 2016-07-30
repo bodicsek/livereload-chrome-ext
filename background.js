@@ -3,33 +3,59 @@
 var tabIds = [];
 
 chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+  //TODO: check if the current page has livereload.js already inserted
   chrome.pageAction.show(tabs[0].id);
 });
 
 chrome.tabs.onSelectionChanged.addListener(function (tabId) {
+  //TODO: check if the current page has livereload.js already inserted
   chrome.pageAction.show(tabId);
 });
 
 chrome.pageAction.onClicked.addListener(function (tab) {
-  injectLivereloadScript(tab.id);
+  toggleLivereloadScript(tab.id);
 });
 
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
   if (changeInfo.status == "complete") {
-    if (tabIds.includes(tabId)) {
-      injectLivereloadScript(tabId);
-    }
+    chrome.pageAction.show(tabId);
+    tabIds.filter(function (id) { id === tabId })
+      .forEach(function (id) { setUpTab(id) });
   }
 });
 
-function injectLivereloadScript(tabId) {
-  chrome.tabs.executeScript(tabId, {
-    file: 'content_script.js'
-  }, function () {
-    chrome.tabs.sendMessage(tabId, {}, function (response) {
-      if (!tabIds.includes(tabId)) {
-        tabIds.push(tabId);
-      }
+function toggleLivereloadScript(tabId) {
+  if (!tabIds.includes(tabId)) {
+    setUpTab(tabId);
+  } else {
+    tearDownTab(tabId);
+  }
+}
+
+function setUpTab(tabId) {
+  injectContentScript(tabId, function () {
+    injectLivereloadScript(tabId, function () {
+      tabIds = tabIds.concat([tabId]);
+      chrome.pageAction.setIcon(tabId, "images/active.png");
     });
   });
+}
+
+function tearDownTab(tabId) {
+  extractLivereloadScript(tabId, function () {
+    tabIds = tabIds.filter(function (id) { id !== tabId });
+    chrome.pageAction.setIcon(tabId, "images/inactive.png");
+  });
+}
+
+function injectContentScript(tabId, callback) {
+  chrome.tabs.executeScript(tabId, { file: 'content_script.js' }, callback);
+}
+
+function injectLivereloadScript(tabId, callback) {
+  chrome.tabs.sendMessage(tabId, { msg: "inject" }, callback);
+}
+
+function extractLivereloadScript(tabId, callback) {
+  chrome.tabs.sendMessage(tabId, { msg: "extract" }, callback);
 }
