@@ -6,8 +6,8 @@ var script;
 chrome.runtime.onMessage.addListener(function (msg) {
   switch (msg.msg) {
     case "inject":
-      console.log("[LIVERELOAD CONTENT] inject");
-      injectLivereload();
+      console.log("[LIVERELOAD CONTENT] inject " + msg.url);
+      injectLivereload(msg.url);
       break;
     case "extract":
       console.log("[LIVERELOAD CONTENT] extract");
@@ -18,12 +18,12 @@ chrome.runtime.onMessage.addListener(function (msg) {
   }
 });
 
-function injectLivereload() {
+function injectLivereload(url) {
   if (script) {
     extractLivereload();
   }
   script = document.createElement("script");
-  script.setAttribute("src", "http://localhost:35729/livereload.js");
+  script.setAttribute("src", url);
   document.head.appendChild(script);
 }
 

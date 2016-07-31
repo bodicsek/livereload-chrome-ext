@@ -52,9 +52,18 @@ function injectContentScript(tabId, callback) {
 }
 
 function injectLivereloadScript(tabId, callback) {
-  chrome.tabs.sendMessage(tabId, { msg: "inject" }, callback);
+  chrome.tabs.sendMessage(tabId, { msg: "inject", url: getLivereloadScriptUrl() }, callback);
 }
 
 function extractLivereloadScript(tabId, callback) {
   chrome.tabs.sendMessage(tabId, { msg: "extract" }, callback);
+}
+
+function getLivereloadScriptUrl() {
+  var defaultUrl = "http://localhost:35729/livereload.js";
+  var storedUrl = localStorage["livereloadUrl"];
+  if (storedUrl === undefined || storedUrl === null || storedUrl === "") {
+    return defaultUrl;
+  }
+  return storedUrl;
 }
