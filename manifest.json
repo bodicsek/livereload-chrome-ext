@@ -1,11 +1,16 @@
 {
   "name": "Livereload",
   "description": "Injects livereload.js into the current page.",
-  "version": "2.0",
+  "version": "0.9",
   "permissions": [
     "tabs",
     "http://*/*"
   ],
+  "icons": {
+    "16": "images/inactive16.png",
+    "48": "images/inactive48.png",
+    "128": "images/inactive.png"
+  },
   "background": {
     "scripts": [
       "background.js"
