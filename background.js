@@ -48,7 +48,9 @@ function tearDownTab(tabId) {
 }
 
 function injectContentScript(tabId, callback) {
-  chrome.tabs.executeScript(tabId, { file: "content_script.js" }, callback);
+  delay(getInjectDelay(), function () {
+    chrome.tabs.executeScript(tabId, { file: "content_script.js" }, callback);
+  });
 }
 
 function injectLivereloadScript(tabId, callback) {
@@ -66,4 +68,17 @@ function getLivereloadScriptUrl() {
     return defaultUrl;
   }
   return storedUrl;
+}
+
+function getInjectDelay() {
+  var defaultDelay = 500;
+  var storedDelay = localStorage["injectDelay"];
+  if (storedDelay === undefined || storedDelay === null || storedDelay === "") {
+    return defaultDelay;
+  }
+  return storedDelay;
+}
+
+function delay(ms, callback) {
+  setTimeout(callback, ms);
 }
