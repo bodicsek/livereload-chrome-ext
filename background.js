@@ -34,7 +34,7 @@ function toggleLivereloadScript(tabId) {
 function setUpTab(tabId) {
   injectContentScript(tabId, function () {
     injectLivereloadScript(tabId, function () {
-      tabIds = tabIds.concat([tabId]);
+      tabIds = tabIds.includes(tabId) ? tabIds : tabIds.concat([tabId]);
       chrome.pageAction.setIcon({ tabId: tabId, path: "images/active.png" });
     });
   });
