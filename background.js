@@ -16,10 +16,15 @@ chrome.pageAction.onClicked.addListener(function (tab) {
 });
 
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
+  console.log(`event: onUpdated tabId ${tabId} changeInfo ${JSON.stringify(changeInfo)}`);
   if (changeInfo.status == "complete") {
     chrome.pageAction.show(tabId);
     tabIds.filter(function (id) { return id === tabId; })
-      .forEach(function (id) { setUpTab(id); });
+      .forEach(function (id) {
+        delay(getInjectDelay(), function () {
+          setUpTab(id);
+        });
+      });
   }
 });
 
@@ -32,25 +37,27 @@ function toggleLivereloadScript(tabId) {
 }
 
 function setUpTab(tabId) {
+  console.log(`executing: setUpTab tabId ${tabId}`);
   injectContentScript(tabId, function () {
     injectLivereloadScript(tabId, function () {
       tabIds = tabIds.includes(tabId) ? tabIds : tabIds.concat([tabId]);
       chrome.pageAction.setIcon({ tabId: tabId, path: "images/active.png" });
+      console.log(`done: setUpTab tabIds [${tabIds}]`);
     });
   });
 }
 
 function tearDownTab(tabId) {
+  console.log(`executing: tearDownTab tabId ${tabId}`);
   extractLivereloadScript(tabId, function () {
     tabIds = tabIds.filter(function (id) { return id !== tabId; });
     chrome.pageAction.setIcon({ tabId: tabId, path: "images/inactive.png" });
+    console.log(`done: tearDownTab tabIds [${tabIds}]`);
   });
 }
 
 function injectContentScript(tabId, callback) {
-  delay(getInjectDelay(), function () {
-    chrome.tabs.executeScript(tabId, { file: "content_script.js" }, callback);
-  });
+  chrome.tabs.executeScript(tabId, { file: "content_script.js" }, callback);
 }
 
 function injectLivereloadScript(tabId, callback) {
