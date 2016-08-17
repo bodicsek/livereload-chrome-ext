@@ -28,6 +28,14 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo) {
   }
 });
 
+chrome.tabs.onRemoved.addListener(function (tabId) {
+  console.log(`event: onRemove tabId ${tabId}`);
+  const index = tabIds.indexOf(tabId);
+  if (index > -1) {
+    tabIds.splice(index, 1);
+  }
+});
+
 function toggleLivereloadScript(tabId) {
   if (!tabIds.includes(tabId)) {
     setUpTab(tabId);
