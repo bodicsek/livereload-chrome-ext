@@ -1,7 +1,7 @@
 {
   "name": "Livereload",
   "description": "Injects livereload.js into the current page.",
-  "version": "0.9.0",
+  "version": "0.9.3",
   "permissions": [
     "tabs",
     "http://*/*",
